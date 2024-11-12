@@ -32,11 +32,11 @@ public class LockTarget : MonoBehaviour
     
     private void OnEnable()
     {
-        EventManager.OnLockInputPerformed += OnLockStateChange;
+        EventManager.OnLockInputPerformed += OnLockInput;
         EventManager.OnLockedTargetSwitched += OnLockedTargetSwitch;
     }
 
-    private void OnLockStateChange()
+    private void OnLockInput()
     {
         if (_isLocked)
         {
@@ -68,7 +68,7 @@ public class LockTarget : MonoBehaviour
    
     private void OnDisable()
     {
-        EventManager.OnLockInputPerformed -= OnLockStateChange;
+        EventManager.OnLockInputPerformed -= OnLockInput;
         EventManager.OnLockedTargetSwitched -= OnLockedTargetSwitch;
     }
     

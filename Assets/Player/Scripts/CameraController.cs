@@ -23,9 +23,9 @@ public class CameraController : MonoBehaviour
     
     private float _pitch;
     private float _yaw;
-    private Quaternion _originalRotation;
     
     private bool _isLocked;
+
     private void OnEnable()
     {
         EventManager.OnLockStateChanged += OnLockBoolChange;
@@ -50,12 +50,6 @@ public class CameraController : MonoBehaviour
         EventManager.OnLockStateChanged -= OnLockBoolChange;
         EventManager.OnMouseLookInputPerformed -= OnMouseLookChange;
     }
-
-    private void Start()
-    {
-        _originalRotation = transform.rotation;
-    }
-
     private void LateUpdate()
     {
         UpdateCameraPosition(_isLocked);
@@ -65,23 +59,22 @@ public class CameraController : MonoBehaviour
     {
         if (isLocked)
         {
-            Vector3 targetPos = playerTransform.position - playerTransform.forward * distanceLocked + playerTransform.right * horizontalAdjustValue;
-            Vector3 adjustedTargetPos = new Vector3(targetPos.x , targetPos.y + heightLocked, targetPos.z);
-
-            transform.position = Vector3.Lerp(transform.position, adjustedTargetPos, smoothSpeed);
-            Quaternion targetRotation = Quaternion.LookRotation(_target.transform.position - transform.position);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, smoothSpeed);
-            //transform.LookAt(_target.transform);
+            HandleLockedCamMovement();
         }
         else
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, _originalRotation, smoothSpeed * Time.deltaTime);
-            Vector3 targetPos = playerTransform.position;
-            Vector3 adjustedTargetPos = new Vector3(targetPos.x - distanceUnlocked, targetPos.y + heightUnlocked, targetPos.z);
-            
-            transform.position = Vector3.Lerp(transform.position, adjustedTargetPos, smoothSpeed);
             HandleMouseMovement();
         }
+    }
+
+    private void HandleLockedCamMovement()
+    {
+        Vector3 targetPos = playerTransform.position - playerTransform.forward * distanceLocked + playerTransform.right * horizontalAdjustValue;
+        Vector3 adjustedTargetPos = new Vector3(targetPos.x , targetPos.y + heightLocked, targetPos.z);
+        transform.position = Vector3.Lerp(transform.position, adjustedTargetPos, smoothSpeed);
+            
+        Quaternion targetRotation = Quaternion.LookRotation(_target.transform.position - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, smoothSpeed);
     }
 
     private void HandleMouseMovement()
