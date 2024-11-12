@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -124,7 +119,6 @@ public class PlayerMovement : MonoBehaviour
     {
         float targetAngle = Mathf.Atan2(target.x, target.z) * Mathf.Rad2Deg;
         float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _refVelocity, smoothTime);
-        transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
 
         return smoothAngle;
     }

@@ -69,7 +69,9 @@ public class CameraController : MonoBehaviour
             Vector3 adjustedTargetPos = new Vector3(targetPos.x , targetPos.y + heightLocked, targetPos.z);
 
             transform.position = Vector3.Lerp(transform.position, adjustedTargetPos, smoothSpeed);
-            transform.LookAt(_target.transform);
+            Quaternion targetRotation = Quaternion.LookRotation(_target.transform.position - transform.position);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, smoothSpeed);
+            //transform.LookAt(_target.transform);
         }
         else
         {
