@@ -45,8 +45,6 @@ public class LockTarget : MonoBehaviour
         }
 
         LockATarget();
-
-        
     }
 
     private void OnLockedTargetSwitch(Vector2 direction)
@@ -172,7 +170,7 @@ public class LockTarget : MonoBehaviour
     {
         if (_targetableObjectsSide.Count > 0)
         {
-            _targetObject = FindClosestTarget(_targetableObjectsSide, transform);
+            _targetObject = FindClosestTarget(_targetableObjectsSide, _targetObject.transform);
             AdjustAnimationAndLockState();
         }
     }
