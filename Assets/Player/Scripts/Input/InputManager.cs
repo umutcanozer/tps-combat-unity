@@ -15,6 +15,7 @@ public class InputManager : MonoBehaviour
         }
         _inputActions.Enable();
         _inputActions.PlayerControls.LockToggle.performed += ctx => MiddleMouseClicked();
+        _inputActions.PlayerControls.Attack.performed += ctx => LeftMouseButtonClicked();
         _inputActions.PlayerControls.SwitchTarget.performed += ctx => SetTarget(ctx.ReadValue<Vector2>());
     }
     
@@ -26,7 +27,11 @@ public class InputManager : MonoBehaviour
         
         SetMouseAxis(_inputActions.PlayerControls.MouseLook.ReadValue<Vector2>());
     }
-    
+
+    private void LeftMouseButtonClicked()
+    {
+        EventManager.TriggerAttackInput();
+    }
     private void MiddleMouseClicked()
     {
         EventManager.TriggerLockInput();

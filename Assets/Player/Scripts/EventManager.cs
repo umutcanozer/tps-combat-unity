@@ -9,6 +9,7 @@ public static class EventManager
     public static event UnityAction<bool> OnSprintInputPerformed;
     public static event UnityAction<Vector2> OnMovementInputsPerformed;
     public static event UnityAction<Vector2> OnMouseLookInputPerformed;
+    public static event UnityAction OnAttackInputPerformed;
     public static void TriggerLockStateChanged(bool isLocked, GameObject target)
     {
         OnLockStateChanged?.Invoke(isLocked, target);
@@ -22,6 +23,11 @@ public static class EventManager
     public static void TriggerLockInput()
     {
         OnLockInputPerformed?.Invoke();
+    }
+
+    public static void TriggerAttackInput()
+    {
+        OnAttackInputPerformed?.Invoke();
     }
 
     public static void TriggerSprintInput(bool isSprinting)
