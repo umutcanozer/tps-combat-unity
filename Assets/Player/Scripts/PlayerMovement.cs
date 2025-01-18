@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody _rb;
     private AnimationHandler _animatorHandler;
     private LockTarget _lockTarget;
+    private Player _player;
 
     private float _verticalAxis;
     private float _horizontalAxis;
@@ -17,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     private float _speed;
     private float _refVelocity;
     private bool _isSprinting;
+    private bool _isAttacking;
     private Vector3 _moveDirection;
 
     private void OnEnable()
@@ -47,10 +49,12 @@ public class PlayerMovement : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _animatorHandler = AnimationHandler.GetInstance(GetComponent<Animator>());
         _lockTarget = GetComponent<LockTarget>();
+        _player = GetComponent<Player>();
     }
     
     void FixedUpdate()
     {
+        if(_player.IsAttacking) return;
         HandleMovement();
     }
 

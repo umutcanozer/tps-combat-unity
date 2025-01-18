@@ -16,7 +16,7 @@ public abstract class Character : MonoBehaviour, IDamagable
         }
     }
     
-    protected virtual void Die()
+    private void Die()
     {
         Debug.Log($"{gameObject.name} is dead.");
         Destroy(gameObject);

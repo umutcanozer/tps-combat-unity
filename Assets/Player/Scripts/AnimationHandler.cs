@@ -16,6 +16,20 @@ public class AnimationHandler
     private readonly int _horizontalHash = Animator.StringToHash("horizontal");
     private readonly int _isLockedHash = Animator.StringToHash("isLocked");
     private readonly int _speedHash = Animator.StringToHash("speed");
+    private static readonly int[] _comboHashes = {
+        Animator.StringToHash("attack0"),
+        Animator.StringToHash("attack1"),
+        Animator.StringToHash("attack2"),
+        Animator.StringToHash("attack3")
+    };
+
+    public int ComboHashesLength
+    {
+        get => _comboHashes.Length;
+    }
+
+
+    private bool _isAttacking;
 
     private AnimationHandler(Animator animator)
     {
@@ -31,6 +45,11 @@ public class AnimationHandler
         return _instance;
     }
 
+    public void TriggerAttack(int comboIndex)
+    {
+        _anim.SetTrigger(_comboHashes[comboIndex]);
+    }
+    
     public void SetLockStatus(bool isLocked)
     {
         _anim.SetBool(_isLockedHash, isLocked);
@@ -57,6 +76,20 @@ public class AnimationHandler
         _anim.SetFloat(_verticalHash, _currentVertical);
         _anim.SetFloat(_horizontalHash, _currentHorizontal);
     }
+
+    /*public bool AttackAdjustment()
+    {
+        if (IsAttackAnimationFinished()) _isAttacking = true;
+        else _isAttacking = false;
+
+        return _isAttacking;
+    }
+
+    private bool IsAttackAnimationFinished()
+    {
+        AnimatorStateInfo currentState = _anim.GetCurrentAnimatorStateInfo(0);
+        return currentState.IsTag("Attack");
+    }*/
 }
 
 
