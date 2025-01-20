@@ -16,7 +16,10 @@ public class AnimationHandler
     private readonly int _horizontalHash = Animator.StringToHash("horizontal");
     private readonly int _isLockedHash = Animator.StringToHash("isLocked");
     private readonly int _speedHash = Animator.StringToHash("speed");
-    private static readonly int[] _comboHashes = {
+    private readonly int _drawHash = Animator.StringToHash("draw");
+    private readonly int _hasWeapon = Animator.StringToHash("DoesHaveWeapon");
+    private readonly int _undrawHash = Animator.StringToHash("undraw");
+    private readonly int[] _comboHashes = {
         Animator.StringToHash("attack0"),
         Animator.StringToHash("attack1"),
         Animator.StringToHash("attack2"),
@@ -27,8 +30,7 @@ public class AnimationHandler
     {
         get => _comboHashes.Length;
     }
-
-
+    
     private bool _isAttacking;
 
     private AnimationHandler(Animator animator)
@@ -54,6 +56,21 @@ public class AnimationHandler
     {
         _anim.SetBool(_isLockedHash, isLocked);
     }
+
+    public void TriggerDrawSword()
+    {
+        _anim.SetTrigger(_drawHash);
+    }
+
+    public void TriggerUndrawSword()
+    {
+        _anim.SetTrigger(_undrawHash);
+    }
+
+    public void SetHavingWeaponBool(bool hasWeapon)
+    {
+        _anim.SetBool(_hasWeapon, hasWeapon);
+    }
     
     public void SetLockedSprintParameters(float horizontal, float vertical)
     {
@@ -77,7 +94,7 @@ public class AnimationHandler
         _anim.SetFloat(_horizontalHash, _currentHorizontal);
     }
 
-    /*public bool AttackAdjustment()
+    public bool AttackAdjustment()
     {
         if (IsAttackAnimationFinished()) _isAttacking = true;
         else _isAttacking = false;
@@ -89,7 +106,7 @@ public class AnimationHandler
     {
         AnimatorStateInfo currentState = _anim.GetCurrentAnimatorStateInfo(0);
         return currentState.IsTag("Attack");
-    }*/
+    }
 }
 
 

@@ -25,7 +25,7 @@ public class CameraController : MonoBehaviour
     private float _yaw;
     
     private bool _isLocked;
-
+    
     private void OnEnable()
     {
         EventManager.OnLockStateChanged += OnLockBoolChange;
@@ -76,6 +76,7 @@ public class CameraController : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(_target.transform.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, smoothSpeed);
     }
+   
 
     private void HandleMouseMovement()
     {

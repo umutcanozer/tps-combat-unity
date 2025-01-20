@@ -28,8 +28,8 @@ public class LockTarget : MonoBehaviour
     
     private GameObject _targetObject;
     public GameObject TargetObject => _targetObject;
-    
-    
+
+    private Player _player;
     private void OnEnable()
     {
         EventManager.OnLockInputPerformed += OnLockInput;
@@ -38,6 +38,7 @@ public class LockTarget : MonoBehaviour
 
     private void OnLockInput()
     {
+        if (!_player.HasSword) return;
         if (_isLocked)
         {
             UnlockTarget();
@@ -49,7 +50,7 @@ public class LockTarget : MonoBehaviour
 
     private void OnLockedTargetSwitch(Vector2 direction)
     {
-        if (_targetableObjects.Count <= 1) return;
+        if (_targetableObjects.Count <= 1 || !_isLocked) return;
         Vector3 targetScreenPos = _cam.WorldToScreenPoint(_targetObject.transform.position);
 
         
@@ -75,22 +76,43 @@ public class LockTarget : MonoBehaviour
         _animatorHandler = AnimationHandler.GetInstance(GetComponent<Animator>());
         _targetableObjectsSide = new List<GameObject>();
         _targetableObjects = new List<GameObject>();
+        _player = GetComponent<Player>();
     }
 
     private void Update()
     {
         //Debug.Log(_isLocked);
         //Debug.Log(_targetObject);
-        Debug.Log(_targetableObjects.Count.ToString() + "targets");
-        if(_targetableObjectsSide.Count > 0 && _targetableObjectsSide != null) Debug.Log(_targetableObjectsSide.Count.ToString());
+        
+        if (_isLocked && _targetObject == null)
+        {
+            HandleTargetDeath();
+        }
+        //if(_targetableObjectsSide.Count > 0 && _targetableObjectsSide != null) Debug.Log(_targetableObjectsSide.Count.ToString());
     }
     
     private void UnlockTarget()
     {
+        _targetableObjectsSide.Clear();
         _targetableObjects.Clear();
         _isLocked = false;
         _targetObject = null;
         AdjustAnimationAndLockState();
+    }
+    
+    private void HandleTargetDeath()
+    {
+        _targetableObjects.Remove(_targetObject);
+
+        if (_targetableObjects.Count > 0)
+        {
+            _targetObject = FindClosestTarget(_targetableObjects, transform);
+            AdjustAnimationAndLockState();
+        }
+        else
+        {
+            UnlockTarget();
+        }
     }
 
     private void LockATarget()
